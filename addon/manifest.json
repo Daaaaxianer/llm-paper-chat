@@ -1,0 +1,15 @@
+{
+  "manifest_version": 2,
+  "name": "LLM Paper Chat",
+  "version": "0.1.0",
+  "description": "Paper Q&A, PDF Translation, and Literature Reviews",
+  "icons": { "48": "content/icon.svg" },
+  "applications": {
+    "zotero": {
+      "id": "paperdesk@local.zotero",
+      "update_url": "https://github.com/Daaaaxianer/llm-paper-chat/releases/latest/download/updates.json",
+      "strict_min_version": "10.0",
+      "strict_max_version": "10.0.*"
+    }
+  }
+}
