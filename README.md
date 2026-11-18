@@ -4,7 +4,7 @@
 
 **在 Zotero 10 右侧边栏用大语言模型与论文对话、翻译 PDF、总结文献和撰写综述。**
 
-[下载安装包](https://github.com/Daaaaxianer/llm-paper-chat/releases/latest) · [English quick start](#english-quick-start) · [反馈问题](https://github.com/Daaaaxianer/llm-paper-chat/issues)
+[English](README.en.md) · [下载安装包](https://github.com/Daaaaxianer/llm-paper-chat/releases/latest) · [功能截图](#功能截图) · [反馈问题](https://github.com/Daaaaxianer/llm-paper-chat/issues)
 
 ## 功能
 
@@ -15,6 +15,26 @@
 - **文献总结**：生成结构化纯文本总结，可复制或保存为 Zotero 笔记。
 - **文献综述**：按主题综合一个或多个收藏夹中的研究发现、局限与研究空白。
 
+## 功能截图
+
+### AI 侧边栏
+
+选中论文后，在右侧边栏提问、生成总结或发起 PDF 翻译。
+
+![Zotero 文献列表和 LLM Paper Chat 右侧边栏，显示论文总结、原位翻译、历史和提问入口](docs/screenshots/ai-sidebar.png)
+
+### PDF 划词翻译
+
+选中 PDF 中的一段文字，译文直接显示在阅读器弹窗内。示例论文为 [Yang 等，Nature Plants，2019](https://doi.org/10.1038/s41477-019-0458-0)。
+
+<img src="docs/screenshots/selection-translation.png" alt="PDF 阅读器中高亮的英文段落及弹窗中的中文译文" width="720">
+
+### 双语 PDF
+
+左侧为英文原文，右侧为中文译文。示例翻译自 [Domínguez Conde 等，Science，2022](https://doi.org/10.1126/science.abl5197) 的作者手稿，原文采用 [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)。
+
+![英语原文与中文译文并排显示的双语 PDF](docs/screenshots/bilingual-pdf.png)
+
 ## 安装与配置
 
 1. 从发行页下载 `.xpi` 文件，在 Zotero 10 的 **工具 → 插件 → 齿轮 → 从文件安装插件** 中打开。
@@ -22,6 +42,12 @@
 3. 在 **模型 API** 中选择服务、填入模型 ID 和 API 密钥，点击 **测试连接** 后保存。支持 OpenAI、Gemini、DeepSeek、Kimi、GLM、Claude 及自定义 OpenAI 兼容接口。
 
 自定义接口可填写 API 根地址或完整的 `/chat/completions` 地址。界面、源语言和目标语言均可在设置中切换。
+
+### OpenAI 兼容模型设置
+
+在 **设置 → 模型 API → 服务** 中选择 **自定义（OpenAI 兼容）**。下图展示了服务选项和「测试连接」按钮的位置。
+
+<img src="docs/screenshots/model-api.png" alt="模型设置的服务下拉菜单，包含自定义 OpenAI 兼容接口和测试连接入口" width="480">
 
 ## 整篇 PDF 翻译
 
@@ -43,12 +69,6 @@ uv tool dir --bin
 - **本地历史**可查看和复用已有分析，默认保留 **30 天**，可在设置中调整或清空。
 - **Zotero 笔记**按 Zotero 的同步设置管理。
 - **模型服务**接收分析或翻译所需的文本。API 密钥保存在 Zotero 的密码存储中。
-
-## English quick start
-
-Install the [latest XPI](https://github.com/Daaaaxianer/llm-paper-chat/releases/latest) in Zotero 10 via **Tools → Plugins → Install Plugin From File**. Open the sidebar from the toolbar. In **Settings**, choose a model provider, test the connection, and set **Interface language** to **English** if desired.
-
-Chat with papers in the AI sidebar, save summaries as Zotero notes, write literature reviews from collections, and translate selected text in the PDF reader. For layout-preserving full-PDF translations and bilingual PDFs, configure a local BabelDOC executable in **Settings → Translation**.
 
 ## 从源码构建
 
