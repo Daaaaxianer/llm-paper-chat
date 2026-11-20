@@ -274,6 +274,8 @@
     "Translate selection": [
       "翻譯所選文字", "選択箇所を翻訳", "선택한 텍스트 번역", "Traduire la sélection", "Auswahl übersetzen", "Перевести выделенный текст",
     ],
+    "Translation result": ["翻譯結果", "翻訳結果", "번역 결과", "Résultat de la traduction", "Übersetzung", "Результат перевода"],
+    "Copy translation": ["複製翻譯結果", "翻訳をコピー", "번역 복사", "Copier la traduction", "Übersetzung kopieren", "Копировать перевод"],
     "Select a shorter passage.": [
       "請選取較短的段落。", "より短い範囲を選択してください。", "더 짧은 구절을 선택하세요.", "Sélectionnez un passage plus court.",
       "Wählen Sie einen kürzeren Abschnitt.", "Выделите более короткий фрагмент.",

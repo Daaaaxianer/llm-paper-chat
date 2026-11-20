@@ -87,9 +87,27 @@
       const button = doc.createElement("button");
       button.type = "button";
       button.textContent = t("翻译选中文字", "Translate selection");
-      button.style.cssText = "padding:4px 8px;border:1px solid color-mix(in srgb,currentColor 25%,transparent);border-radius:4px;color:inherit;background:transparent;cursor:pointer;";
+      const buttonStyle = "padding:4px 8px;border:1px solid color-mix(in srgb,currentColor 25%,transparent);border-radius:4px;color:inherit;background:transparent;cursor:pointer;";
+      button.style.cssText = buttonStyle;
       const result = doc.createElement("div");
       result.setAttribute("role", "status");
+      const copyLabel = t("复制翻译结果", "Copy translation");
+      const translation = doc.createElement("textarea");
+      translation.className = "text";
+      translation.readOnly = true;
+      translation.rows = 1;
+      translation.hidden = true;
+      translation.setAttribute("aria-label", t("翻译结果", "Translation result"));
+      translation.style.cssText = "box-sizing:border-box;width:100%;max-height:155px;resize:none;padding:0;border:0;background:transparent;color:inherit;font:inherit;cursor:text;user-select:text;";
+      const copy = doc.createElement("button");
+      copy.type = "button";
+      copy.hidden = true;
+      copy.textContent = copyLabel;
+      copy.style.cssText = buttonStyle;
+      copy.addEventListener("click", () => {
+        Zotero.Utilities.Internal.copyTextToClipboard(translation.value);
+        copy.textContent = t("已复制", "Copied");
+      });
       const old = this.readerPending.get(reader);
       if (old && old.text !== selected) old.controller.abort();
       const translate = async () => {
@@ -108,8 +126,12 @@
         button.disabled = true;
         result.textContent = t("正在翻译…", "Translating…");
         try {
-          result.textContent = await task.promise;
+          translation.value = await task.promise;
+          result.textContent = "";
           button.hidden = true;
+          translation.hidden = false;
+          translation.style.height = translation.scrollHeight + "px";
+          copy.hidden = false;
         } catch (error) {
           result.textContent = task.controller.signal.aborted ? "" : error.message || String(error);
         } finally {
@@ -118,7 +140,7 @@
         }
       };
       button.addEventListener("click", translate);
-      node.append(button, result);
+      node.append(button, result, translation, copy);
       append(node);
       if (config.selectionMode === "auto") doc.defaultView.setTimeout(translate, 350);
     }

@@ -10,6 +10,7 @@
   --pd-border: color-mix(in srgb, CanvasText 17%, Canvas);
   --pd-wash: color-mix(in srgb, CanvasText 5%, Canvas);
   --pd-accent: light-dark(#09696d, #78d1ca);
+  position: relative;
   display: flex;
   flex: 0 0 clamp(280px, 32vw, 440px);
   flex-direction: column;
@@ -79,6 +80,7 @@
 .pd-user { margin-inline-start: 16px; border-radius: 7px; background: var(--pd-wash); }
 .pd-notice { border-inline-start: 2px solid var(--pd-border); color: var(--pd-muted); }
 .pd-notice button { display: block; margin-top: 6px; }
+.pd-answer { -moz-user-select: text; user-select: text; cursor: text; }
 .pd-answer h3 { margin: 7px 0 3px; font-size: 1.07em; }
 .pd-copy { font-size: 11px !important; color: var(--pd-muted) !important; }
 .pd-message-actions { display: flex; flex-wrap: wrap; gap: 4px; }

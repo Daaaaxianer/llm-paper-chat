@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "LLM Paper Chat",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Paper Q&A, PDF Translation, and Literature Reviews",
   "icons": { "48": "content/icon.svg" },
   "applications": {
