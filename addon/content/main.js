@@ -83,7 +83,9 @@
       const selected = PaperDesk.normalize(params.annotation?.text);
       if (!selected || config.selectionMode === "off") return;
       const node = doc.createElement("div");
-      node.style.cssText = "display:block;padding:4px 8px;max-width:340px;max-height:250px;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;font-size:13px;line-height:1.5;user-select:text;";
+      node.style.cssText = "display:grid;gap:6px;padding:4px 8px;white-space:pre-wrap;overflow-wrap:anywhere;font-size:13px;line-height:1.5;";
+      const actions = doc.createElement("div");
+      actions.style.cssText = "display:flex;gap:6px;align-items:stretch;";
       const button = doc.createElement("button");
       button.type = "button";
       button.textContent = t("翻译选中文字", "Translate selection");
@@ -101,9 +103,10 @@
       translation.style.cssText = "box-sizing:border-box;width:100%;max-height:155px;resize:none;padding:0;border:0;background:transparent;color:inherit;font:inherit;cursor:text;user-select:text;";
       const copy = doc.createElement("button");
       copy.type = "button";
-      copy.hidden = true;
+      copy.disabled = true;
       copy.textContent = copyLabel;
       copy.style.cssText = buttonStyle;
+      copy.style.opacity = "0.5";
       copy.addEventListener("click", () => {
         Zotero.Utilities.Internal.copyTextToClipboard(translation.value);
         copy.textContent = t("已复制", "Copied");
@@ -128,10 +131,12 @@
         try {
           translation.value = await task.promise;
           result.textContent = "";
-          button.hidden = true;
           translation.hidden = false;
+          translation.style.height = "auto";
           translation.style.height = translation.scrollHeight + "px";
-          copy.hidden = false;
+          copy.disabled = !translation.value.trim();
+          copy.style.opacity = copy.disabled ? "0.5" : "";
+          copy.textContent = copyLabel;
         } catch (error) {
           result.textContent = task.controller.signal.aborted ? "" : error.message || String(error);
         } finally {
@@ -140,9 +145,48 @@
         }
       };
       button.addEventListener("click", translate);
-      node.append(button, result, translation, copy);
+      actions.append(button, copy);
+      node.append(actions, result, translation);
       append(node);
+      this.makeReaderPopupMovable(node);
       if (config.selectionMode === "auto") doc.defaultView.setTimeout(translate, 350);
+    }
+
+    makeReaderPopupMovable(node) {
+      const popup = node.closest(".selection-popup");
+      if (!popup) return;
+      popup.style.width = "min(320px, calc(100% - 24px))";
+      popup.style.maxWidth = "none";
+      popup.style.boxSizing = "border-box";
+      const handle = node.ownerDocument.createElement("span");
+      handle.style.cssText = "position:absolute;top:8px;bottom:8px;right:0;width:8px;display:grid;place-items:center;cursor:grab;touch-action:none;";
+      handle.setAttribute("aria-hidden", "true");
+      const grip = node.ownerDocument.createElement("span");
+      grip.style.cssText = "width:2px;height:24px;border-radius:2px;background:currentColor;opacity:.35;";
+      handle.append(grip);
+      node.append(handle);
+      let drag;
+      let x = 0;
+      let y = 0;
+      handle.addEventListener("pointerdown", event => {
+        if (event.button !== 0) return;
+        handle.setPointerCapture(event.pointerId);
+        drag = { x, y, clientX: event.clientX, clientY: event.clientY,
+          box: popup.getBoundingClientRect(), bounds: popup.parentElement.getBoundingClientRect() };
+        handle.style.cursor = "grabbing";
+      });
+      handle.addEventListener("pointermove", event => {
+        if (!drag) return;
+        const { box, bounds } = drag;
+        x = drag.x + Math.max(bounds.left - box.left, Math.min(event.clientX - drag.clientX, bounds.right - box.right));
+        y = drag.y + Math.max(bounds.top - box.top, Math.min(event.clientY - drag.clientY, bounds.bottom - box.bottom));
+        popup.style.translate = x + "px " + y + "px";
+      });
+      handle.addEventListener("lostpointercapture", () => {
+        drag = null;
+        handle.style.cursor = "grab";
+      });
+      handle.addEventListener("click", event => event.stopPropagation());
     }
   }
   PaperDesk.App = App;
